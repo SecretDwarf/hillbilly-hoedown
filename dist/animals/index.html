@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Animal Practice · Hillbilly Hoedown</title>
+<link rel="stylesheet" href="../test-screen.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#24362a;color:#fff0cf;font:16px system-ui}main{max-width:850px;margin:auto;padding:12px}a,h1{color:#ffdb89}h1{font:700 30px Georgia;margin:7px 0}canvas{display:block;width:100%;height:48dvh;min-height:245px;max-height:570px;background:#8fa57c;border-radius:12px}button,select{font:inherit;min-height:44px;border:none;border-radius:9px;padding:8px 13px;background:#f3d19a;color:#2e261d}button:active{background:#a2d6bb}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}.controls{display:flex;justify-content:space-between;align-items:center;gap:12px}.action{border-radius:50%;width:82px;height:82px;font-weight:700;background:#f7bb72}.stick{position:relative;width:100px;height:100px;background:#405b47;border:2px solid #efd39c;border-radius:50%;touch-action:none;flex:none}.stick span{position:absolute;inset:26px;border-radius:50%;background:#f3d19a;transform:translate(var(--x,0px),var(--y,0px));pointer-events:none}.hud p{margin:6px 0;color:#ffdb89}.hint{margin:8px 0;min-height:2.8em}.test-side{padding:0 2px}
+</style></head><body><main class="test-shell">
+<a class="test-hide" href="../">Hillbilly Hoedown</a><h1 class="test-hide">Animal Practice</h1>
+<div class="test-top"><div class="hud"><p id="status" role="status">Loading 3D yard…</p></div><div class="test-full-toolbar"><button class="test-full-enter">Full screen</button><button class="test-full-exit" aria-label="Exit full screen">×</button></div></div>
+<div class="test-view test-viewport"><canvas id="field" aria-label="3D animal practice yard"></canvas></div>
+<div class="test-side">
+<div class="row"><label>Animal <select id="animal"><option value="goat">Goat</option><option value="goose">Goose</option><option value="pig">Pig</option><option value="sheep">Sheep</option></select></label><button id="camera">Switch camera</button></div>
+<p id="hint" class="hint"></p><div class="controls"><button id="stick" class="stick" aria-label="Movement thumbstick"><span></span></button><button id="action" class="action">Ram</button></div>
+<p class="test-hide">On a keyboard, use WASD or arrows to move and Space for the animal action.</p>
+</div></main>
+<script type="module" src="../test-screen.js"></script><script type="module" src="./practice.js?animals=5"></script></body></html>

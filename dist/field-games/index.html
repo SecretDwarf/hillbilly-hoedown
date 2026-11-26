@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hillbilly Hoedown · 3D Minigames</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#253429;color:#fff0cf;font:16px system-ui}
+main{max-width:710px;margin:auto;padding:12px}a{color:#ffd987}h1{margin:8px 0;font:700 32px Georgia;color:#ffdc8f}
+nav,.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+nav a,button,select{min-height:44px;padding:10px 14px;background:#efd19a;color:#30251b;border:0;border-radius:8px;font:700 16px system-ui;text-decoration:none}
+[aria-current=page],#action{background:#86cbb4}button:disabled{opacity:.55}#action[aria-pressed=true]{background:#ffdc8f}
+canvas{display:block;width:100%;height:auto;border-radius:12px;background:#799359}
+.hud{display:flex;justify-content:space-between;gap:8px;margin:8px 0}output{color:#ffdc8f;font-weight:bold}
+label{flex:1;min-width:125px}input{display:block;width:100%;height:44px;accent-color:#86cbb4}
+#stick{width:100px;height:100px;border-radius:50%;touch-action:none;background:#425f48;border:2px solid #efd19a;position:relative;user-select:none}#stick span{position:absolute;top:50%;left:50%;width:42px;height:42px;border-radius:50%;background:#efd19a;transform:translate(-50%,-50%) translate(var(--x,0px),var(--y,0px));pointer-events:none}meter{width:min(100%,430px);height:22px;accent-color:#efd19a}[hidden]{display:none!important}p{margin:6px 0}
+
+#stage{position:relative}
+#screen-actions,#overlay-hud,#close-controls{display:none}
+.immersive{overflow:hidden}
+.immersive #stage{position:fixed;inset:0;z-index:2;background:#253429}
+.immersive canvas{width:100%;height:100%;border-radius:0;position:absolute;inset:0}
+.immersive #overlay-hud{position:absolute;display:grid;gap:3px;top:max(8px,env(safe-area-inset-top));left:max(8px,env(safe-area-inset-left));background:#253429e8;padding:7px 11px;border-radius:9px;max-width:56%;pointer-events:none}
+.immersive #screen-actions{position:absolute;display:flex;gap:6px;top:max(8px,env(safe-area-inset-top));right:max(8px,env(safe-area-inset-right))}
+#gamepad{display:flex;align-items:center;justify-content:space-between;min-height:136px;padding:6px 8px}#diamond{margin-left:auto;display:grid;grid-template:repeat(3,46px)/repeat(3,52px);gap:3px}.immersive #gamepad{min-height:0}
+.immersive #diamond{position:fixed;display:grid;grid-template:repeat(3,44px)/repeat(3,44px);gap:3px;z-index:3;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));pointer-events:none}
+#diamond button{pointer-events:auto;padding:0;font-size:12px;line-height:1.05;border-radius:50%;touch-action:manipulation}
+#diamond button:disabled{pointer-events:none;background:#344f46;color:white}
+#pad-north{grid-area:1/2}#pad-west{grid-area:2/1}#pad-east{grid-area:2/3}#pad-south{grid-area:3/2;background:#86cbb4}
+.immersive #stick:not([hidden]){position:fixed;z-index:3;bottom:max(14px,env(safe-area-inset-bottom));left:max(14px,env(safe-area-inset-left))}
+.immersive #settings{display:none}
+.immersive.drawer #settings{display:block;position:fixed;z-index:4;inset:auto 0 0;margin:auto;width:min(100%,560px);max-height:85dvh;overflow:auto;background:#253429;padding:12px 16px max(12px,env(safe-area-inset-bottom));border-radius:14px 14px 0 0;box-shadow:0 0 0 100vmax #141f1b6b}
+.immersive.drawer #close-controls{display:inline-flex}
+.immersive.drawer #diamond,.immersive.drawer #stick{visibility:hidden}
+.immersive #tower-timing:not([hidden]){position:fixed;z-index:3;bottom:max(12px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(44vw,360px);padding:2px 6px;background:#253429df;border-radius:6px}
+@media(orientation:portrait){.immersive #overlay-hud{top:max(57px,env(safe-area-inset-top));max-width:92%}}
+</style>
+<main>
+<a href="../arcade/">Minigame Tests</a>
+<nav aria-label="Choose a game"><a id="golf" href="#golf">Hillbilly Golf</a><a id="tower" href="#tower">Water Tower Dash</a><a id="sheep" href="#sheep">Sheep Herdin’</a><a id="chase" href="#chase">Rabbit Run Mix-Up</a><a id="ferry" href="#ferry">Watermelon Ferry</a><a id="sprinkler" href="#sprinkler">Sprinkler Scramble</a><a id="sack" href="#sack">Sack Race</a><a id="barn" href="#barn">Barn Painting</a><a id="gopher" href="#gopher">Gopher Catching</a><a id="feed" href="#feed">Feed Store Run</a><a id="hay" href="#hay">Buck the Hay</a><a id="pull" href="#pull">Tractor Pull</a><a id="bog" href="#bog">Mud Bog</a><a id="wind" href="#wind">Windmill Repair</a><a id="mail" href="#mail">Mailbox Makeover</a><a id="derby" href="#derby">Demolition Derby</a><a id="junk" href="#junk">Junkyard Jamboree</a><a id="plant" href="#plant">Plantin’</a><a id="goat" href="#goat">Goat Getaway</a><a id="can" href="#can">Kick the Can</a><a id="hen" href="#hen">Little Red Hen</a><a id="fox" href="#fox">Fox’n da Hen House</a><a id="cow" href="#cow">Cow Tippin’</a><a id="butcher" href="#butcher">Butcher the Cow</a><a id="truth" href="#truth">Truth or Dare</a><a id="pie" href="#pie">Pie Cookin’</a></nav>
+<h1 id="title">Hillbilly Golf</h1>
+<div class="hud"><span id="status" role="status"></span><output id="score"></output></div>
+<div id="stage">
+<canvas id="field" width="640" height="360" aria-label="Minigame view"></canvas>
+<div id="overlay-hud" aria-hidden="true"><span id="overlay-status"></span><output id="overlay-score"></output></div>
+<div id="screen-actions"><button id="open-controls" aria-expanded="false">Controls</button><button id="exit-screen" aria-label="Exit full screen">×</button></div>
+</div>
+<button id="full-screen">Full screen</button>
+<div id="gamepad">
+<div id="stick" aria-label="Movement thumbstick" hidden><span></span></div>
+<div id="diamond" role="group" aria-label="Gamepad buttons">
+<button id="pad-north" aria-label="Top action">Y</button><button id="pad-west" aria-label="Left action">X</button>
+<button id="pad-east" aria-label="Right action">B</button><button id="pad-south" aria-label="Bottom action">A</button>
+</div>
+</div>
+<div id="tower-timing" hidden><label id="timing-label" for="timing">Climb timing</label> <meter id="timing" min="-850" max="850" low="-205" high="205" optimum="0" value="850"></meter></div>
+<section id="settings" aria-label="Controls">
+<button id="close-controls" aria-label="Close controls">×</button>
+<div class="row" id="golf-controls">
+<label>Aim <input id="aim" type="range" min="-180" max="180" value="0" step="1"></label>
+<label>Power <input id="power" type="range" min="8" max="100" value="70"></label>
+</div>
+<div class="row" id="chase-roles" hidden><label>Play as <select id="chase-role"><option value="rabbit">Rabbit</option><option value="coyote">Coyote</option><option value="farmer">Farmer</option></select></label></div>
+
+<div class="row"><button id="start">Start round</button><button id="restart" hidden>Restart round</button><button id="action" disabled>Putt</button></div>
+<div id="paint-controls" class="row" hidden><label>Round mode <select id="barn-preset"><option value="random">Random</option><option value="timed">Timed</option><option value="craft">Craftsmanship</option></select></label><button id="row-down">Row down</button><button id="row-up">Row up</button><button id="refill">Refill</button></div>
+<div id="tractor-controls" class="row" hidden><button id="throttle-down">Throttle −</button><button id="throttle-up">Throttle +</button><button id="clutch">Clutch</button></div>
+<div id="bog-controls" class="row" hidden><button id="bog-gear">Gear</button><button id="bog-winch">Winch</button><button id="bog-brake">Brake</button></div>
+<div id="wind-tools" class="row" hidden><button id="tool-wrench">Wrench</button><button id="tool-oil">Oil</button><button id="tool-belt">Belt</button></div>
+<div id="rabbit-tools" class="row" hidden><button id="rabbit-feint">Feint</button><button id="rabbit-burrow">Burrow</button><button id="rabbit-dash">Dash</button></div>
+<div id="workshop-controls" class="row" hidden><label>Round mode <select id="mail-preset"><option value="random">Random</option><option value="timed">Timed</option><option value="craft">Craftsmanship</option></select></label><button id="mail-sand">Sand</button><button id="mail-paint">Paint</button><button id="mail-fit">Fit</button></div>
+<div id="truth-controls" class="row" hidden><button id="choose-truth">Truth</button><button id="choose-dare">Dare</button><button id="pass-prompt">Pass</button></div>
+<div id="pie-controls" class="row" hidden><label>Pie preset <select id="pie-preset"><option value="random">Random</option><option value="rush">Order Rush</option><option value="race">Three-Pie Race</option><option value="ribbon">Blue Ribbon</option></select></label><button id="pie-card">Recipe</button><button id="pie-swap">Swap</button><button id="pie-aim">Hold to aim toss</button></div>
+<div id="hay-controls" class="row" hidden><button id="hay-helper">Slow driver</button></div>
+<div id="sheep-controls" class="row" hidden><label>Sheep mode <select id="sheep-preset"><option value="random">Random</option><option value="race">Barn Race</option><option value="shared">Shared Pasture</option><option value="practice">Solo Practice</option></select></label><button id="sheep-dog-left">Dog left</button><button id="sheep-whistle">Whistle</button><button id="sheep-dog-right">Dog right</button></div>
+<div id="ferry-controls" class="row" hidden><label>Ferry mode <select id="ferry-preset"><option value="random">Random</option><option value="lanes">Side-by-Side Race</option><option value="river">Shared River</option><option value="practice">Solo Practice</option></select></label><button id="ferry-left">Paddle left</button><button id="ferry-brace">Brace</button><button id="ferry-right">Paddle right</button></div>
+<div id="sack-controls" class="row" hidden><label>Sack Race mode <select id="sack-preset"><option value="random">Random</option><option value="sprint">Rhythm Sprint</option><option value="obstacles">Obstacle Course</option></select></label><button id="sack-recover">Recover</button><button id="sack-brace">Brace</button><button id="sack-big">Big hop</button></div>
+<div id="plant-controls" class="row" hidden><button id="plant-weed">Weed</button><button id="plant-till">Till</button><button id="plant-sow">Sow</button></div>
+<div id="spray-controls" class="row" hidden><label>Garden mode <select id="garden-preset"><option value="scramble">Sprinkler Scramble</option><option value="crew">Water Crew Mix-Up</option></select></label><button id="spray-turn">Switch fork</button><button id="spray-off">Shut off</button><button id="spray-dash">Dash</button></div>
+<div id="feed-controls" class="row" hidden><button id="feed-brace">Brace</button><button id="feed-ticket">Ticket</button><button id="feed-return">Return</button></div>
+<div id="garage-controls" class="row" hidden><button id="garage-wrench">Wrench</button><button id="garage-clamp">Clamp</button><button id="garage-test">Test</button></div>
+<div id="gopher-controls" class="row" hidden><button id="gopher-bait">Bait</button><button id="gopher-peek">Peek</button><button id="gopher-cover">Cover</button></div>
+<div id="goat-controls" class="row" hidden><button id="goat-shoo">Shoo</button><button id="goat-gate">Open gate</button><button id="goat-whistle">Whistle</button></div>
+<div id="hen-controls" class="row" hidden><button id="hen-milk">Milk</button><button id="hen-knead">Knead</button><button id="hen-churn">Churn</button></div>
+<div id="butcher-controls" class="row" hidden><button id="butcher-wrap">Wrap</button><button id="butcher-label">Label</button><button id="butcher-ticket">Ticket</button></div>
+<div id="cow-controls" class="row" hidden><button id="cow-left">Rock left</button><button id="cow-brace">Brace</button><button id="cow-right">Rock right</button></div>
+<div id="tower-tools" class="row" hidden><button id="tower-stairs">Stairs</button><button id="tower-brace">Brace</button><button id="tower-ladder">Ladder</button></div>
+<div id="derby-tools" class="row" hidden><button id="derby-brake">Handbrake</button><button id="derby-brace">Brace</button><button id="derby-repair">Repair</button></div>
+<div id="fox-tools" class="row" hidden><button id="fox-decoy">Decoy</button><button id="fox-dash">Alarm</button><button id="fox-sneak">Sneak</button></div>
+<div id="can-tools" class="row" hidden><button id="can-hide">Hide</button><button id="can-distract">Distract</button><button id="can-dash">Dash</button></div>
+<p id="instructions"></p>
+<p>Keyboard: WASD or arrows to move. 1–4 map to left, top, right, bottom. Space also uses the bottom action.</p>
+</section>
+</main>
+<script type="module" src="game.js"></script>
+</html>

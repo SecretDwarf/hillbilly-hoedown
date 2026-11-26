@@ -1,0 +1,43 @@
+.test-full-toolbar{display:flex;justify-content:flex-end;margin:.45rem 0}
+.test-full-toolbar button{min-height:44px}
+.test-full-exit{display:none}
+body.test-full{overflow:hidden}
+body.test-full .test-shell{
+ position:fixed;inset:0;z-index:10;width:100%;max-width:none;height:100dvh;margin:0;
+ padding:max(4px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(4px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));
+ background:#24362a;display:grid;grid-template-columns:minmax(0,1fr);
+ grid-template-rows:auto minmax(0,1fr) auto;gap:4px;
+}
+.test-top,.test-side,.test-view{display:contents}
+body.test-full .test-hide{display:none}
+body.test-full .test-top{display:flex;gap:8px;align-items:center;justify-content:space-between;min-width:0}
+body.test-full .test-top .hud{display:flex;flex:1;align-items:center;margin:0;padding:0}
+body.test-full .test-full-toolbar{order:2;margin:0}
+body.test-full .test-full-enter{display:none}
+body.test-full .test-full-exit{display:inline-block}
+body.test-full .test-view{display:grid;place-items:center;min-height:0;min-width:0;container-type:size}
+body.test-full .test-view canvas{
+ width:min(100cqw,calc(100cqh * var(--ratio,1.64)));height:auto;aspect-ratio:var(--ratio,1.64);
+ min-height:0;max-height:none;border-radius:6px
+}
+body.test-full .test-view.test-viewport canvas{width:100%;height:100%;aspect-ratio:auto}
+body.test-full .test-side{display:block;min-width:0;min-height:0;max-height:40dvh;overflow:auto;overscroll-behavior:contain}
+body.test-full .test-side .row,body.test-full .test-side .controls,body.test-full .test-side .actions{margin:3px 0}
+body.test-full .test-side label{min-width:0}
+@media(orientation:landscape){
+ body.test-full .test-shell{grid-template-columns:minmax(0,1fr) clamp(172px,30vw,330px);grid-template-rows:auto minmax(0,1fr);gap:6px}
+ body.test-full .test-top{grid-column:1/-1}
+ body.test-full .test-side{max-height:none;align-self:stretch}
+ body.test-full .test-side .controls{flex-wrap:wrap}
+ body.test-full #pig-pad{grid-template-columns:repeat(3,minmax(42px,1fr));margin-left:auto}
+}
+.test-readout{display:contents}
+body.test-full .test-readout{display:flex;align-items:center;flex:1;gap:8px;min-width:0}
+body.test-full .test-readout .hud{min-width:0;gap:7px}
+body.test-full #pig-score{white-space:normal}
+@media(orientation:landscape){
+ body.test-full .test-side #stick{
+  position:fixed;z-index:11;left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom))
+ }
+ body.test-full .test-side #pig-pad{margin:0 auto}
+}

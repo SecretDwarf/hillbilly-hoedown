@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Play Greased Pig and Shopping Cart Slalom in the Hillbilly Hoedown phone playtest.">
+<title>Hillbilly Hoedown</title>
+<link rel="stylesheet" href="test-screen.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#202e25;color:#fff5d9;font:16px system-ui,sans-serif}main{width:min(100%,700px);margin:auto;padding:12px}header{border-radius:16px;padding:12px 16px;background:linear-gradient(90deg,#27241af5,#27241a66),url(farm.png) center 44%/cover}h1{font:bold clamp(25px,6vw,42px) Georgia;margin:0;color:#ffdb83}h2{font-size:17px;margin:3px 0}.picker{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}.picker button[aria-pressed="true"]{background:#79d3bf}.row{margin-top:7px}.row button[aria-pressed="true"]{background:#79d3bf}.hud{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:8px 2px}.hud p{margin:0}output{white-space:nowrap;font-weight:bold;color:#ffdb83}canvas{display:block;width:100%;border-radius:12px;background:#8b9b59}.controls{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}.stick{position:relative;width:104px;height:104px;border:2px solid #e5c17a;border-radius:50%;background:#34473a;touch-action:none;user-select:none;-webkit-user-select:none}.stick-knob{position:absolute;left:50%;top:50%;width:46px;height:46px;border-radius:50%;background:#f1d38e;border:3px solid #fff0bf;box-shadow:0 3px 6px #18251a;pointer-events:none;transform:translate(-50%,-50%) translate(var(--x,0px),var(--y,0px))}button{border:0;border-radius:9px;font:700 15px system-ui;padding:0 10px;min-height:44px;background:#f1d38e;color:#28251c;touch-action:none;user-select:none}.up{grid-column:2}.left{grid-column:1}.grab{background:#79d3bf;min-width:92px;min-height:66px}.grab.in-reach{background:#ffdf80;box-shadow:0 0 0 3px #fff0ba}.actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}.actions p{font-size:14px;margin:0}.actions button{flex-shrink:0}button:disabled{opacity:.5}button:focus-visible{outline:3px solid white;outline-offset:2px}
+#pig-pad{display:grid;grid-template:repeat(3,44px)/repeat(3,minmax(46px,69px));gap:3px;justify-content:end}#pig-pad button{min-width:0;min-height:44px;padding:1px 3px;font-size:.83rem;border-radius:22px}#pig-pad .in-reach{background:#ffdf80;box-shadow:0 0 0 2px #fff0ba}#grip-left{grid-area:2/1}#grip-right{grid-area:2/3}#grip-brace{grid-area:1/2}#pig-pad #grab{grid-area:3/2}#pig-pad.cart{display:block}#pig-pad.cart #grab{min-width:92px}#grip-hint{color:#ffdf80;font-weight:bold;margin:3px 0}[hidden]{display:none!important}</style>
+<main class="test-shell">
+<header class="test-hide"><h1>Hillbilly Hoedown</h1></header>
+<p class="test-hide"><a style="color:#ffdb83" href="farm/">Farm lobby</a> · <a style="color:#ffdb83" href="movement/#spectate">Spectate the farm</a> · <a style="color:#ffdb83" href="movement/">Movement Lab</a> · <a style="color:#ffdb83" href="animals/">Animal practice</a> · <a style="color:#ffdb83" href="arcade/">More minigames</a></p>
+<nav class="test-hide picker" aria-label="Minigames"><button id="pig-mode" aria-pressed="true">Greased Pig</button><button id="cart-mode" aria-pressed="false">Shopping Cart Slalom</button></nav>
+<div class="row test-hide"><button id="practice" aria-pressed="false">Solo practice</button></div>
+<div class="test-top"><div class="test-full-toolbar"><button type="button" class="test-full-enter">Full screen</button><button type="button" class="test-full-exit" aria-label="Exit full screen">×</button></div><div class="test-readout"><div class="hud"><p id="status" role="status">Teal team: You and June</p><output id="time">30 s</output></div>
+<output id="pig-score" aria-label="Team score">Teal 0 · Rivals 0</output>
+</div></div><div class="test-view" style="--ratio:1.54"><canvas id="arena" width="600" height="390" aria-label="Farmyard arena. Your teal farmer has an H on their shirt."></canvas></div><div class="test-side">
+<div class="controls">
+<div class="stick" id="stick" aria-label="Movement thumbstick"><span class="stick-knob"></span></div>
+<div id="pig-pad" role="group" aria-label="Pig controls"><button id="grip-brace" disabled>Brace</button><button id="grip-left" disabled>Left grip</button><button id="grip-right" disabled>Right grip</button><button class="grab" id="grab">Grab</button></div>
+</div>
+<p id="grip-hint" hidden></p><div class="actions"><p class="test-hide" id="instructions">Steer with one thumb and hold <strong>Grab</strong> with the other. Earn a point per second held. Grab collar and tail bonuses while June carries. Keyboard 1 and 3 shift your grip, 2 braces, and 4 grabs.</p><button id="start">Start round</button></div>
+</div></main><script type="module" src="test-screen.js"></script>
+<script type="module" src="game.js"></script>

@@ -1,0 +1,2 @@
+*.bin binary
+tools/farmer-references/*.rgb binary
